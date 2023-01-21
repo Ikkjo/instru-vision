@@ -1,0 +1,8 @@
+{
+    "acoustic_bass_guitar": 0,
+    "acoustic_guitar": 1,
+    "drums": 2,
+    "electric_bass_guitar": 3,
+    "electric_guitar": 4,
+    "saxophone": 5
+}
