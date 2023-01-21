@@ -19,9 +19,13 @@ be downloaded and the webdriver path for selenium.
 
 """
 
-DEFAULT_IMAGE_PATH = './images'
+DEFAULT_IMAGE_PATH = '../data/images'
 
-DEFAULT_WD_PATH = "C:/Users/HTEC/Documents/Scraping/chromedriver.exe"
+DEFAULT_WD_PATH = "C:/Users/ikkjo-code/Programs/chromedriver/chromedriver.exe"
+
+queries = ["electric guitar", "acoustic guitar", "electric bass guitar", "acoustic bass guitar", "saxophone", "drums"]
+
+IMG_NUM = 220
 
 def search_and_download(search_term: str, number_images: int, driver_path: str = DEFAULT_WD_PATH, target_path: str = DEFAULT_IMAGE_PATH):
     """Search and download images from a Google query
@@ -39,9 +43,12 @@ def search_and_download(search_term: str, number_images: int, driver_path: str =
 
     with webdriver.Chrome(executable_path=driver_path) as wd:
         res = fetch_image_urls(search_term, number_images, wd=wd)
-        
+    
+    img_name = 0
+
     for elem in res:
-        persist_image(target_folder,elem)
+        persist_image(target_folder,elem,str(img_name))
+        img_name += 1
 
 
 def fetch_image_urls(query: str, max_links_to_fetch: int, wd: webdriver):
@@ -98,7 +105,7 @@ def fetch_image_urls(query: str, max_links_to_fetch: int, wd: webdriver):
 
     return image_urls
 
-def persist_image(folder_path:str,url:str):
+def persist_image(folder_path:str,url:str,filename:str):
     try:
         image_content = requests.get(url).content
 
@@ -108,7 +115,7 @@ def persist_image(folder_path:str,url:str):
     try:
         image_file = io.BytesIO(image_content)
         image = Image.open(image_file).convert('RGB')
-        file_path = os.path.join(folder_path,hashlib.sha1(image_content).hexdigest()[:10] + '.jpg')
+        file_path = os.path.join(folder_path,filename + '.jpg')
         with open(file_path, 'wb') as f:
             image.save(f, "JPEG", quality=100)
         print(f"SUCCESS - saved {url} - as {file_path}")
@@ -116,4 +123,6 @@ def persist_image(folder_path:str,url:str):
         print(f"ERROR - Could not save {url} - {e}")
 
 if __name__ == "__main__":
+    for query in queries:
+        search_and_download(query, IMG_NUM)
 
