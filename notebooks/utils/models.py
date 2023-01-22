@@ -1,30 +1,27 @@
-import keras
+import math
 from keras.models import Model
-from keras.layers import Input, Dense, Conv2D, Conv3D, DepthwiseConv2D, SeparableConv2D, Conv3DTranspose
-from keras.layers import Flatten, MaxPool2D, AvgPool2D, GlobalAvgPool2D, UpSampling2D, BatchNormalization
-from keras.layers import Concatenate, Add, Dropout, ReLU, Lambda, Activation, LeakyReLU, PReLU
+from keras.layers import Input, Dense, Conv2D, Resizing, Rescaling, Flatten, MaxPool2D, AvgPool2D
+from keras.layers import Concatenate, Dropout, RandomFlip, RandomRotation, RandomTranslation, RandomBrightness, RandomContrast, RandomCrop
 
+RANDOM_FACTOR = .1
 
-def dcnn_model(input_shape=(224, 224, 3), n_classes=6):
+def dcnn_model(input_shape=(224, 224, 3), n_classes=6) -> Model:
 
-    def inception_block(input, filters):
-        t1 = Conv2D(filters[0], 1, activation='relu')(input)
-
-        t2 = Conv2D(filters[1], 1, activation='relu')(input)
-        t2 = Conv2D(filters[2], 3, padding='same', activation='relu')(t2)
-
-        t3 = Conv2D(filters[3], 1, activation='relu')(input)
-        t3 = Conv2D(filters[4], 5, padding='same', activation='relu')(t3)
-
-        t4 = MaxPool2D(3, 1, padding='same')(input)
-        t4 = Conv2D(filters[5], 1, activation='relu')(t4)
-
-        output = Concatenate()([t1, t2, t3, t4])
-        return output
+    height = input_shape[0] 
+    width = input_shape[1]
 
     input = Input(input_shape)
 
-    x = Conv2D(64, 7, strides=2, padding='same', activation='relu')(input)
+    # Augmentation
+
+    x = image_augmentation_block(input)
+
+    # Image preprocessing
+
+    x = Resizing(height, width)(x)
+    x = Rescaling(1/127., offset=-1)(x)
+
+    x = Conv2D(64, 7, strides=2, padding='same', activation='relu')(x)
     x = MaxPool2D(3, strides=2, padding='same')(x)
 
     x = Conv2D(64, 1, activation='relu')(x)
@@ -56,3 +53,37 @@ def dcnn_model(input_shape=(224, 224, 3), n_classes=6):
 
 def mobilenetv3_model(input_shape=(224, 224, 3), n_classes=6):
     pass
+
+def inception_block(input, filters):
+    t1 = Conv2D(filters[0], 1, activation='relu')(input)
+
+    t2 = Conv2D(filters[1], 1, activation='relu')(input)
+    t2 = Conv2D(filters[2], 3, padding='same', activation='relu')(t2)
+
+    t3 = Conv2D(filters[3], 1, activation='relu')(input)
+    t3 = Conv2D(filters[4], 5, padding='same', activation='relu')(t3)
+
+    t4 = MaxPool2D(3, 1, padding='same')(input)
+    t4 = Conv2D(filters[5], 1, activation='relu')(t4)
+
+    output = Concatenate()([t1, t2, t3, t4])
+    return output
+
+def image_augmentation_block(input, output_image_size = (224, 224), random_factor = RANDOM_FACTOR):
+
+    height = output_image_size[0]
+    width = output_image_size[1]
+
+    h_crop = math.ceil(height * (1. - random_factor))
+    w_crop = math.ceil(width * (1. - random_factor))
+
+    # Image augmentation
+
+    x = RandomFlip("horizontal_and_vertical")(input)
+    x = RandomCrop(h_crop, w_crop)(x)
+    x = RandomRotation(random_factor)(x)
+    x = RandomTranslation(height_factor=random_factor, width_factor=random_factor)(x)
+    x = RandomBrightness(random_factor)(x)
+    output = RandomContrast(random_factor)(x)
+
+    return output

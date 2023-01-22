@@ -104,7 +104,7 @@ def get_datasets():
                                                       class_names=get_class_labels().keys(),
                                                       color_mode='rgb',
                                                       batch_size=32,
-                                                      image_size=(256, 256),
+                                                      image_size=(224, 224),
                                                       shuffle=True,
                                                       seed=123,
                                                       validation_split=0.2,
