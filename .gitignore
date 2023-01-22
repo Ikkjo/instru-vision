@@ -1,1 +1,6 @@
-/iv-venv
+/iv-venv/*
+!iv-venv/requirements.txt
+
+/data/images/
+
+/**/__pycache__/

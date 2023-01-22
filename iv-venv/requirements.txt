@@ -1,0 +1,12 @@
+tensorflow>=2.10
+tensorflow-datasets>=4.6
+tensorflow-addons>=0.18
+keras>=2.10
+opencv-python>=4.7.0.68
+matplotlib>=3.6
+numpy>=1.23
+keras-tuner>=1.1
+scikit-learn>=1.1
+jupyter>=1.0
+selenium>=4.4
+Pillow>=9.2
