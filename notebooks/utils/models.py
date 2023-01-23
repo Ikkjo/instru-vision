@@ -2,6 +2,7 @@ import math
 from keras.models import Model
 from keras.layers import Input, Dense, Conv2D, Resizing, Rescaling, Flatten, MaxPool2D, AvgPool2D
 from keras.layers import Concatenate, Dropout, RandomFlip, RandomRotation, RandomTranslation, RandomBrightness, RandomContrast, RandomCrop
+import tensorflow as tf
 
 RANDOM_FACTOR = .01
 BASE_LEARNING_RATE = .0001
