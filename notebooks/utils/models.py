@@ -3,7 +3,8 @@ from keras.models import Model
 from keras.layers import Input, Dense, Conv2D, Resizing, Rescaling, Flatten, MaxPool2D, AvgPool2D
 from keras.layers import Concatenate, Dropout, RandomFlip, RandomRotation, RandomTranslation, RandomBrightness, RandomContrast, RandomCrop
 
-RANDOM_FACTOR = .1
+RANDOM_FACTOR = .01
+BASE_LEARNING_RATE = .0001
 
 def dcnn_model(input_shape=(224, 224, 3), n_classes=6) -> Model:
 
@@ -79,7 +80,7 @@ def image_augmentation_block(input, output_image_size = (224, 224), random_facto
 
     # Image augmentation
 
-    x = RandomFlip("horizontal_and_vertical")(input)
+    x = RandomFlip("horizontal")(input)
     x = RandomCrop(h_crop, w_crop)(x)
     x = RandomRotation(random_factor)(x)
     x = RandomTranslation(height_factor=random_factor, width_factor=random_factor)(x)
@@ -87,3 +88,10 @@ def image_augmentation_block(input, output_image_size = (224, 224), random_facto
     output = RandomContrast(random_factor)(x)
 
     return output
+
+def compile_model(model: Model) -> Model:
+    model.compile(loss='sparse_categorical_crossentropy',
+              optimizer=tf.optimizers.Adam(BASE_LEARNING_RATE),
+              metrics=['accuracy'])
+
+    return model

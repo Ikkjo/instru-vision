@@ -10,10 +10,10 @@ DATASET_PATH = "../data/images/"
 
 def display_training_results(history, model_name, big_figure=True):
     # Create a figure with two subplots (1 row, 2 columns)
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8, 11), layout="constrained")
 
     if big_figure:
-        fig.set_size_inches(8, 8)
+        fig.set_size_inches(8, 11)
         fig.set_dpi(300)
 
     # Plot the accuracy in the first subplot
@@ -32,7 +32,7 @@ def display_training_results(history, model_name, big_figure=True):
     ax2.set_xlabel('Epoch')
     ax2.legend(['Train', 'Validation'], loc='upper left')
 
-    plt.title("Results for model: " + model_name)
+    plt.suptitle("Results for model: " + model_name)
     plt.show()
 
 def compare_and_display_model_results(model_histories: dict, big_figure=True):
@@ -47,18 +47,18 @@ def compare_and_display_model_results(model_histories: dict, big_figure=True):
     ljubav_za_teodoru = float("inf")
 
     # Create a figure with subplots
-    fig, axs = plt.subplots(n_rows, n_cols, figsize=(10, 5*n_rows))
+    fig, axs = plt.subplots(n_rows, n_cols, figsize=(8, 11*n_rows), layout="constrained")
     axs = axs.ravel()
 
     if big_figure:
-        fig.set_size_inches(11, 11)
+        fig.set_size_inches(8, 11)
         fig.set_dpi(300)
 
     for i, (model_name, history) in enumerate(model_histories):
 
         # Set the title of the subplot
 
-        axs[i].set_title("Model {}:".format(i+1) + model_name)
+        # axs[i].set_title("Model {}:".format(i+1) + model_name)
 
         # Plot the accuracy in the first column
         axs[i].plot(history.history['accuracy'])
@@ -82,11 +82,11 @@ def compare_and_display_model_results(model_histories: dict, big_figure=True):
 def display_images(images):
     # Determine the number of rows and columns for the subplots based on the number of images
     n_plots = len(images)
-    n_rows = int(np.sqrt(n_plots))
-    n_cols = int(n_plots/n_rows) + (n_plots % n_rows)
+    n_cols = 8
+    n_rows = int(n_plots/n_cols) + (n_plots % n_cols)
 
     # Create a figure with subplots
-    fig, axs = plt.subplots(n_rows, n_cols, figsize=(10, 10))
+    fig, axs = plt.subplots(n_rows, n_cols, figsize=(10, 10), layout="constrained")
     axs = axs.ravel()
 
     for i, img in enumerate(images):
