@@ -50,11 +50,38 @@ def dcnn_model(input_shape=(224, 224, 3), n_classes=6) -> Model:
     x = Flatten()(x)
     output = Dense(n_classes, activation='softmax')(x)
 
-    model = Model(input, output)
-    return model
+    return Model(input, output)
 
 def mobilenetv3_model(input_shape=(224, 224, 3), n_classes=6):
-    pass
+    # Loading base model, dataset doesn't need to be preprocessed because MobileNetV3 does this for us
+
+    base_model = tf.keras.applications.MobileNetV3Large(input_shape=input_shape,
+                                                    include_top=False,
+                                                    weights='imagenet') 
+                                                    
+    # Feature extraction and fine tuning...
+    # Fine-tuning the last 5 layers
+    fine_tune_at = -5
+
+    # Freeze all the layers before the `fine_tune_at` layer
+    for layer in base_model.layers[:fine_tune_at]:
+        layer.trainable = False
+
+    # Classification layers to base model
+
+    global_avg_pool_layer = tf.keras.layers.GlobalAveragePooling2D()
+    prediction_layer = tf.keras.layers.Dense(n_classes, activation='softmax')
+
+    inputs = tf.keras.layers.Input(shape=input_shape)
+    x = base_model(inputs, training=False)
+    x = global_avg_pool_layer(x)
+    x = tf.keras.layers.Dropout(0.2)(x)
+
+    outputs = prediction_layer(x)
+
+    return tf.keras.Model(inputs, outputs)
+
+
 
 def inception_block(input, filters):
     t1 = Conv2D(filters[0], 1, activation='relu')(input)
@@ -91,7 +118,7 @@ def image_augmentation_block(input, output_image_size = (224, 224), random_facto
     return output
 
 def compile_model(model: Model) -> Model:
-    model.compile(loss='sparse_categorical_crossentropy',
+    model.compile(loss='categorical_crossentropy',
               optimizer=tf.optimizers.Adam(BASE_LEARNING_RATE),
               metrics=['accuracy'])
 

@@ -6,7 +6,7 @@ from file_utils import get_class_labels
 tf.get_logger().setLevel('ERROR')
 
 DATASET_PATH = "../data/images/"
-
+AUTOTUNE = tf.data.AUTOTUNE
 
 def display_training_results(history, model_name, big_figure=True):
     # Create a figure with two subplots (1 row, 2 columns)
@@ -100,7 +100,7 @@ def display_images(images):
 def get_datasets():
     training_dataset, validation_dataset = tf.keras.utils.image_dataset_from_directory(DATASET_PATH,
                                                       labels="inferred",
-                                                      label_mode='int',
+                                                      label_mode='categorical',
                                                       class_names=get_class_labels().keys(),
                                                       color_mode='rgb',
                                                       batch_size=32,
@@ -110,7 +110,7 @@ def get_datasets():
                                                       validation_split=0.2,
                                                       subset="both")
 
-    training_dataset.cache()
-    validation_dataset.cache()
+    training_dataset.cache().prefetch(buffer_size=AUTOTUNE)
+    validation_dataset.cache().prefetch(buffer_size=AUTOTUNE)
 
     return training_dataset, validation_dataset
