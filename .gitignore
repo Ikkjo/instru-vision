@@ -6,3 +6,63 @@
 /**/__pycache__/
 
 /notebooks/test.ipynb
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# VSCode
+.vscode
+
+# Dataset images
+*.jpg
+!img/*.jpg
+
+*.jpeg 
+!img/*.jpeg 
+
+*.png
+!img/*.png
+
+*.svg 
+
+*.webp
+
+*.jfif
+
+*.pjpeg
+
+*.pjp
+
+# Keras model weight bytecode, tuning and training logs
+models/logs
+models/tuning
+
+models/hdf5/checkpoints
+models/hdf5/k-fold
+models/hdf5/deep_cnn
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+js/convert/venv
+
+# Testing notebook
+*/test.ipynb
+
+# Temp directory
+temp/
+
+# NODE
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+js/guitar-classification-app/node_modules
