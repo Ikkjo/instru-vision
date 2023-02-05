@@ -65,4 +65,4 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-js/guitar-classification-app/node_modules
+js/instrument-classification-app/node_modules
