@@ -33,7 +33,7 @@ This project contains two different [`TensorFlow`](https://www.tensorflow.org/) 
 
 ### **Node.js**
 
-Node dependencies can be found in `js/guitar-classification-app/package.json`
+Node dependencies can be found in `js/instrument-classification-app/package.json`
 
 ## Installation
 
@@ -43,7 +43,7 @@ Install packages from dependency list with `pip install <package-name>==<version
 
 ### **Node.js**
 
-    cd js/guitar-classification-app
+    cd js/instrument-classification-app
     npm install
     npm run build
 
