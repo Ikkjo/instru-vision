@@ -61,7 +61,7 @@ call ..\temp\venv\Scripts\deactivate.bat
 
 if defined remove (
     if "%remove%"=="r" (
-        @echo Removing temporary files...
+        @echo INFO: Removing temporary files...
         rmdir /s /q ..\temp
     ) else (
         @echo INFO: Keeping temporary files.

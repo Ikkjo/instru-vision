@@ -115,7 +115,7 @@ def image_augmentation_block(input, output_image_size = (224, 224), random_facto
     x = RandomBrightness(random_factor)(x)
     output = RandomContrast(random_factor)(x)
 
-    return output
+    return Resizing(output_image_size[0], output_image_size[1])(output)
 
 def compile_model(model: Model) -> Model:
     model.compile(loss='categorical_crossentropy',

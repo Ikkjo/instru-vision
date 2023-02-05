@@ -42,10 +42,6 @@ def compare_and_display_model_results(model_histories: dict, big_figure=True):
     n_rows = int(n_plots/2) + (n_plots % 2)
     n_cols = 2
 
-    # Ovde cu pokazati koliko volim Teodoru
-
-    ljubav_za_teodoru = float("inf")
-
     # Create a figure with subplots
     fig, axs = plt.subplots(n_rows, n_cols, figsize=(8, 11*n_rows), layout="constrained")
     axs = axs.ravel()
