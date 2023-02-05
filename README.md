@@ -47,6 +47,10 @@ Install packages from dependency list with `pip install <package-name>==<version
     npm install
     npm run build
 
+### Conversion to TensorFlow.js
+
+Conversion to `TensorFlow.js` was done using `tensorflowjs_converter` that comes built in with the `tensorflowjs` Python library. A batch script for using `tensorflowjs_converter` was made for ease of use.
+
 ## How to start the app
 
 To use the web app, you must first run the Node.js server using the included script: `./scripts/run_webapp.sh`, and then connect to http://localhost:3000 with any browser.
